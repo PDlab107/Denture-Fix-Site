@@ -5,6 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart | Denture Fix</title>
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- 
+        TODO: SHOPIFY CHECKOUT INTEGRATION
+        
+        To enable Shopify checkout, you need to:
+        
+        1. Include the Shopify Buy Button SDK (if not already included):
+           <script src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
+        
+        2. Initialize the SDK with your store credentials in script.js
+        
+        3. Update the handleCheckout() function in script.js to:
+           - Create a Shopify checkout session
+           - Add cart items to the checkout
+           - Redirect to Shopify checkout URL
+        
+        Alternative: Direct Checkout URL
+        You can also redirect directly to Shopify cart URL:
+        https://YOUR_STORE.myshopify.com/cart/VARIANT_ID:QUANTITY
+        
+        For multiple items:
+        https://YOUR_STORE.myshopify.com/cart/VARIANT_ID_1:1,VARIANT_ID_2:1
+    -->
 </head>
 <body>
     <header>

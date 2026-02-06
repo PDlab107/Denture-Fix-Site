@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
             this.textContent = 'Added!';
             this.style.background = '#10b981';
             setTimeout(() => {
-                this.textContent = 'Get a Free Quote';
+                this.textContent = 'Add to Basket';
                 this.style.background = '';
             }, 1500);
         });
@@ -116,53 +116,108 @@ function renderCart() {
 }
 
 function handleCheckout() {
-    // TODO: Integrate with Shopify Checkout
-    // This is where Shopify Buy Button SDK or direct checkout URL integration will go
+    // TODO: SHOPIFY CHECKOUT INTEGRATION
+    // This function needs to be updated to integrate with Shopify checkout
     
     /* 
-     * SHOPIFY INTEGRATION PLACEHOLDER
+     * ==========================================
+     * SHOPIFY CHECKOUT INTEGRATION INSTRUCTIONS
+     * ==========================================
      * 
-     * To integrate with Shopify checkout, you will need to:
+     * STEP 1: Set up Shopify Store
+     * -----------------------------
+     * - Create a Shopify store at https://www.shopify.com
+     * - Note your store domain: YOUR_STORE.myshopify.com
+     * - Create products in Shopify that match the services on this site
+     * - Get the variant IDs for each product
      * 
-     * 1. Set up your Shopify store and note your store domain
-     * 2. Create products in Shopify that match the services above
-     * 3. Get the Shopify variant IDs for each product
-     * 4. Update the data-product-id attributes to use Shopify variant IDs
+     * STEP 2: Get Storefront Access Token
+     * ------------------------------------
+     * 1. Go to Shopify Admin → Apps → Develop apps
+     * 2. Create a new app or select existing one
+     * 3. Configure Storefront API scopes (unauthenticated_read_product_listings, etc.)
+     * 4. Install the app and get the Storefront Access Token
      * 
-     * Option A: Using Shopify Buy Button SDK
-     * - Include the Shopify Buy Button SDK in your HTML
-     * - Initialize the SDK with your store domain and API key
-     * - Use the SDK to create a checkout with the cart items
+     * STEP 3: Update Product IDs
+     * ---------------------------
+     * Update all data-product-id attributes in services.html with Shopify variant IDs:
+     * - data-shopify-variant-id="gid://shopify/ProductVariant/XXXXXXXXXX"
      * 
-     * Example code:
-     * const client = ShopifyBuy.buildClient({
-     *   domain: 'YOUR_STORE.myshopify.com',
-     *   storefrontAccessToken: 'YOUR_ACCESS_TOKEN'
-     * });
+     * STEP 4: Choose Integration Method
+     * ----------------------------------
      * 
-     * client.checkout.create().then((checkout) => {
-     *   const lineItemsToAdd = cart.map(item => ({
-     *     variantId: item.id,
-     *     quantity: 1
-     *   }));
-     *   
-     *   client.checkout.addLineItems(checkout.id, lineItemsToAdd).then((checkout) => {
-     *     window.location.href = checkout.webUrl;
-     *   });
-     * });
+     * OPTION A: Using Shopify Buy Button SDK (Recommended)
+     * =====================================================
      * 
-     * Option B: Direct Checkout URL
-     * - Build a checkout URL with variant IDs and quantities
-     * - Redirect to Shopify checkout
+     * 1. Include SDK in HTML pages:
+     *    <script src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
      * 
-     * Example:
-     * const checkoutUrl = `https://YOUR_STORE.myshopify.com/cart/${variantId}:1`;
-     * window.location.href = checkoutUrl;
+     * 2. Initialize client at top of this file:
+     *    const shopifyClient = ShopifyBuy.buildClient({
+     *      domain: 'YOUR_STORE.myshopify.com',
+     *      storefrontAccessToken: 'YOUR_ACCESS_TOKEN'
+     *    });
+     * 
+     * 3. Replace the code below with:
+     * 
+     *    async function handleCheckout() {
+     *      try {
+     *        // Create a new checkout
+     *        const checkout = await shopifyClient.checkout.create();
+     *        
+     *        // Prepare line items from cart
+     *        const lineItemsToAdd = cart.map(item => ({
+     *          variantId: item.shopifyVariantId, // Make sure to store this when adding to cart
+     *          quantity: 1
+     *        }));
+     *        
+     *        // Add items to checkout
+     *        const updatedCheckout = await shopifyClient.checkout.addLineItems(
+     *          checkout.id, 
+     *          lineItemsToAdd
+     *        );
+     *        
+     *        // Redirect to Shopify checkout
+     *        window.location.href = updatedCheckout.webUrl;
+     *        
+     *      } catch (error) {
+     *        console.error('Checkout error:', error);
+     *        alert('There was an error processing your checkout. Please try again.');
+     *      }
+     *    }
+     * 
+     * OPTION B: Direct Checkout URL (Simpler but less flexible)
+     * ==========================================================
+     * 
+     * Build a URL with variant IDs and redirect:
+     * 
+     *    function handleCheckout() {
+     *      const SHOPIFY_STORE_DOMAIN = 'YOUR_STORE.myshopify.com'; // TODO: Replace
+     *      
+     *      // Build cart URL with variant IDs
+     *      const cartItems = cart.map(item => 
+     *        `${item.shopifyVariantId}:1`  // variantId:quantity
+     *      ).join(',');
+     *      
+     *      const checkoutUrl = `https://${SHOPIFY_STORE_DOMAIN}/cart/${cartItems}`;
+     *      
+     *      // Redirect to Shopify cart/checkout
+     *      window.location.href = checkoutUrl;
+     *    }
+     * 
+     * STEP 5: Update addToCart Function
+     * ----------------------------------
+     * Modify addToCart() to capture Shopify variant IDs from the button data attributes
+     * and store them with the cart item for use in checkout.
      */
     
-    // Temporary placeholder - alert user
-    alert('Checkout integration pending. Please configure Shopify settings in script.js');
+    // ==========================================
+    // TEMPORARY PLACEHOLDER (Remove in production)
+    // ==========================================
+    alert('Checkout integration pending. Please configure Shopify settings in script.js\n\n' +
+          'See detailed integration instructions in the handleCheckout() function comments.');
     console.log('Cart items to checkout:', cart);
+    console.log('Integration instructions: See handleCheckout() function in script.js');
     
     // In production, replace above with actual Shopify checkout redirect
 }
